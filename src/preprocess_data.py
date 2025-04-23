@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
+df = pd.read_csv("Telco-Customer-Churn.csv")
 
 #Convert TotalCharges to type numeric since we want a boxplot for it
 df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')

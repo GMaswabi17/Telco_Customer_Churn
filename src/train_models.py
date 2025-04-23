@@ -1,3 +1,18 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+
+df = pd.read_csv("Telco-Customer-Churn.csv")
+
+# Load cleaned data
+X_train = pd.read_csv("cleaned_X_train.csv")
+X_test = pd.read_csv("cleaned_X_test.csv")
+y_train = pd.read_csv("cleaned_y_train.csv").squeeze()
+y_test = pd.read_csv("cleaned_y_test.csv").squeeze()
+
 #Apply factorization on all categorical columns. (All columns with type of object are mapped to become numerical)
 for col in df.select_dtypes(include='object').columns:
     df[col], mapping = pd.factorize(df[col])
@@ -32,8 +47,7 @@ print(f"Accuracy: {accuracy:.2f}")
 print(df['Churn'].value_counts(normalize=True))
 
 from sklearn.metrics import confusion_matrix
-import seaborn as sns
-import matplotlib.pyplot as plt
+
 
 cm = confusion_matrix(y_test, y_pred)
 plt.figure(figsize=(6,4))
@@ -62,10 +76,6 @@ plt.tight_layout()
 plt.savefig("FeautureImportance.png")
 plt.show()
 
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-
 importances = rf_model.feature_importances_
 feature_names = X_train.columns
 
@@ -90,7 +100,7 @@ print(correlations)
 from xgboost import XGBClassifier
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, roc_auc_score, roc_curve
 import matplotlib.pyplot as plt
-import seaborn as sns
+
 
 # Create the model
 xgb_model = XGBClassifier(eval_metric='logloss')  # suppress warning

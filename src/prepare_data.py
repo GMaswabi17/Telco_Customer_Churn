@@ -128,6 +128,8 @@ internet_features = [
     "TechSupport", "StreamingTV", "StreamingMovies"
 ]
 
+df_internet = df[df['InternetService'] != 'No']
+
 for feature in internet_features:
     g = sns.catplot(
         data=df_internet,
