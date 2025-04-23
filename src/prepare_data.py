@@ -3,12 +3,30 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set_theme(style="whitegrid")
 
-#Load dataset and get a summary of the info
+#Read dataset and attach it to the dataframe
 df = pd.read_csv("Telco-Customer-Churn.csv")
-df.info()
 
-#Checking to see if there are any missing values in the dataset
-df.isnull().sum()
+
+#Check if there are any blank or null values in the dataset
+print(df.isnull().sum())
+print(df.describe())
+print(df.dtypes)
+
+#Check to see if there are missing values
+if df.isnull().values.any():
+    print("There are missing values in the dataset.")
+else:
+    print("No missing values found!")
+    numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns   
+    #print numeric columns
+    print(f"Numeric columns detected: {list(numeric_cols)}") 
+
+    #Print rows with missing data (We had 11 rows and will drop them in the following indentation)
+print(df[df.isnull().any(axis=1)])
+
+# Check which columns are categorical
+categorical_cols = df.select_dtypes(include='object').columns.tolist()
+print("Categorical columns:", categorical_cols)
 
 #Univariate Data Analyis
 #Starting with Demographics
@@ -125,12 +143,3 @@ for feature in internet_features:
     plt.savefig(f"../Churn by InternetService and {feature}")
     plt.show()
 
-#Convert TotalCharges to type numeric since we want a boxplot for it
-#df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
-
-
-
-#Phone Service
-#df_phone_only = df[(df['PhoneService'] == 'Yes') & (df['InternetService'] == 'No')]
-
-#df['HasInternetAndPhone'] = ((df['InternetService'] != 'No') & (df['PhoneService'] == 'Yes')).astype(int)
