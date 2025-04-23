@@ -1,7 +1,12 @@
-pandas
-numpy
 matplotlib
 seaborn
-scikit-learn
-xgboost
-gunicorn
+dash==2.17.0
+dash-bootstrap-components==1.5.0
+pandas==2.2.2
+numpy==1.24.4
+scikit-learn==1.5.1
+xgboost==2.0.3
+plotly==5.21.0
+tensorflow-cpu==2.15.0
+joblib==1.4.2
+gunicorn==21.2.0
