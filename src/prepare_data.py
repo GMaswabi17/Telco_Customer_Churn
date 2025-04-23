@@ -4,7 +4,7 @@ import seaborn as sns
 sns.set_theme(style="whitegrid")
 
 #Read dataset and attach it to the dataframe
-df = pd.read_csv("Telco-Customer-Churn.csv")
+df = pd.read_csv("_data/Telco-Customer-Churn.csv")
 
 
 #Check if there are any blank or null values in the dataset

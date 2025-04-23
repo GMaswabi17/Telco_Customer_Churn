@@ -5,13 +5,13 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
-df = pd.read_csv("Telco-Customer-Churn.csv")
+df = pd.read_csv("_data/Telco-Customer-Churn.csv")
 
 # Load cleaned data
 X_train = pd.read_csv("cleaned_X_train.csv")
 X_test = pd.read_csv("cleaned_X_test.csv")
-y_train = pd.read_csv("cleaned_y_train.csv").squeeze()
-y_test = pd.read_csv("cleaned_y_test.csv").squeeze()
+y_train = pd.read_csv("cleaned_y_train.csv").squeeze().map({"No": 0, "Yes": 1})
+y_test = pd.read_csv("cleaned_y_test.csv").squeeze().map({"No": 0, "Yes": 1})
 
 #Apply factorization on all categorical columns. (All columns with type of object are mapped to become numerical)
 for col in df.select_dtypes(include='object').columns:
@@ -31,10 +31,10 @@ print(df.isnull().sum())
 
 #Logistic Regression
 from sklearn.linear_model import LogisticRegression
-model = LogisticRegression(max_iter=3000)
-model.fit(X_train, y_train)
+logistic_model = LogisticRegression(max_iter=3000)
+logistic_model.fit(X_train, y_train)
 
-y_pred = model.predict(X_test)
+y_pred = logistic_model.predict(X_test)
 
 from sklearn.metrics import classification_report
 print("=== Classification Report ===")
@@ -126,3 +126,8 @@ plt.xlabel('Predicted')
 plt.ylabel('Actual')
 plt.title('XGBoost Confusion Matrix')
 plt.show()
+
+import joblib
+joblib.dump(rf_model, 'artifacts_random_forest_model.pkl')
+joblib.dump(xgb_model, 'artifacts_xgb_model.pkl')
+joblib.dump(logistic_model, 'artifacts_logisticalregression_model.pkl')
