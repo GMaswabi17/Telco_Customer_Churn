@@ -10,3 +10,4 @@ plotly==5.21.0
 tensorflow-cpu==2.15.0
 joblib==1.4.2
 gunicorn==21.2.0
+numpy>=1.21.0
