@@ -86,12 +86,24 @@ app.layout = dbc.Container([
     *[State(field[0], 'value') for field in input_fields]
 )
 def predict(n_clicks, model_choice, *values):
-    if n_clicks is None:
+    if not n_clicks or not model_choice:
         return ''
 
+    # Raw input dictionary
     input_dict = {field[0]: val for field, val in zip(input_fields, values)}
+
+    # Basic preprocessing for known mappings (you can expand this if you used encoders or pipelines)
+    binary_map = {'Yes': 1, 'No': 0}
+    input_dict['SeniorCitizen'] = binary_map.get(input_dict.get('SeniorCitizen'), 0)
+    input_dict['Partner'] = binary_map.get(input_dict.get('Partner'), 0)
+    input_dict['PhoneService'] = binary_map.get(input_dict.get('PhoneService'), 0)
+    input_dict['PaperlessBilling'] = binary_map.get(input_dict.get('PaperlessBilling'), 0)
+    input_dict['Dependents'] = int(input_dict.get('Dependents', 0))
+
+    # Convert to DataFrame
     input_df = pd.DataFrame([input_dict])
 
+    # Load model
     if model_choice == 'rf':
         model = rf_model
     elif model_choice == 'xgb':
@@ -99,9 +111,12 @@ def predict(n_clicks, model_choice, *values):
     else:
         model = logisticalregression_model
 
-    pred = model.predict(input_df)[0]
-    result = 'Yes' if pred == 1 else 'No'
-    return f"Predicted Churn: {result}"
+    try:
+        pred = model.predict(input_df)[0]
+        result = 'Yes' if pred == 1 else 'No'
+        return f"Predicted Churn: {result}"
+    except Exception as e:
+        return f"Error during prediction: {str(e)}"
 
 
 if __name__ == "__main__":
