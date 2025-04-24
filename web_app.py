@@ -72,14 +72,15 @@ app.layout = dbc.Container([
             ),
             dbc.Button("Predict Churn", id='predict-btn', color='primary', className='w-100'),
             html.Br(),
-            html.Div(id='prediction-result', className='lead text-center mt-3')
+            html.Label("Prediction Result", className="form-label mt-3"),
+            dcc.Input(id='prediction-result', type='text', readOnly=True, className='form-control mb-3')
         ], width=6)
     ])
 ], fluid=True)
 
 # Callback for prediction
 @app.callback(
-    Output('prediction-result', 'children'),
+    Output('prediction-result', 'value'),
     Input('predict-btn', 'n_clicks'),
     State('model-choice', 'value'),
     *[State(field[0], 'value') for field in input_fields]
