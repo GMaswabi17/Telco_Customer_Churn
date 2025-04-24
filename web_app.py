@@ -73,14 +73,14 @@ app.layout = dbc.Container([
             dbc.Button("Predict Churn", id='predict-btn', color='primary', className='w-100'),
             html.Br(),
             html.Label("Prediction Result", className="form-label mt-3"),
-            dcc.Input(id='prediction-result', type='text', readOnly=True, className='form-control mb-3')
+            html.Div(id='prediction-result', className='alert alert-info')
         ], width=6)
     ])
 ], fluid=True)
 
 # Callback for prediction
 @app.callback(
-    Output('prediction-result', 'value'),
+    Output('prediction-result', 'children'),
     Input('predict-btn', 'n_clicks'),
     State('model-choice', 'value'),
     *[State(field[0], 'value') for field in input_fields]
@@ -102,6 +102,7 @@ def predict(n_clicks, model_choice, *values):
     pred = model.predict(input_df)[0]
     result = 'Yes' if pred == 1 else 'No'
     return f"Predicted Churn: {result}"
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050))
